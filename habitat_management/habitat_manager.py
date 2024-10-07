@@ -1,5 +1,5 @@
 from typing import Optional, List
-from wildlife_tracker.habitat_management.habitat import Habitat
+from habitat_management.habitat import Habitat
 
 class HabitatManager:
     def assign_animals_to_habitat(habitat_id: int, animals: List[Animal]) -> None:
@@ -22,4 +22,8 @@ class HabitatManager:
 
     def get_habitats_by_type(environment_type: str) -> List[Habitat]:
         pass
+        
+    def remove_habitat(habitat_id: int) -> None:
+        pass
+    
     pass
