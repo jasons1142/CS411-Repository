@@ -1,5 +1,5 @@
 from typing import Optional
-
+from migration_tracking.migration import Migration
 
 class MigrationManager:
     def get_migration_by_id(migration_id: int) -> Migration:
