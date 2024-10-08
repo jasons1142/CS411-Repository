@@ -1,5 +1,6 @@
 from typing import Any, Optional
 
 class Animal:
-
-    pass
+    def get_animal_details(animal_id) -> dict[str, Any]:
+        pass
+    
