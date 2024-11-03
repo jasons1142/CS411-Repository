@@ -1,45 +1,36 @@
-from contextlib import contextmanager
-
 import pytest
-import re
-import sqlite3
 
-from meal_max.models.battle_model import (
-    BattleModel,
-    battle,
-    clear_combatants,
-    get_battle_score,
-    get_combatants,
-)
+from meal_max.models.battle_model import BattleModel
+from meal_max.models.kitchen_model import Meal
 
-def normalize_whitespace(sql_query: str) -> str:
-    return re.sub(r'\s+', ' ', sql_query).strip()
+@pytest.fixture()
+def battle_model():
+    """ Fixture to provide a new instance of BattleModel for each test."""
+    return BattleModel()
 
 @pytest.fixture
-def mock_cursor(mocker):
-    mock_conn = mocker.Mock()
-    mock_cursor = mocker.Mock()
-    
-    # Mock the connection's cursor
-    mock_conn.cursor.return_value = mock_cursor
-    mock_cursor.fetchone.return_value = None
-    mock_cursor.fetchall.return_value = []
-    mock_conn.commit.return_value = None
-    
-    # Mock the get_db_connection context manager from sql_utils
-    @contextmanager
-    def mock_get_db_connection():
-        yield mock_conn # Yield the mocked connection object
-    
-    mocker.patch("meal_max.models.battle_model.get_db_connection", mock_get_db_connection)
-    
-    return mock_cursor  # Return the mock cursor so we can set expectations per test
-    
-######################################################
-#
-#    Add and delete
-#
-######################################################
+def sample_meal1():
+    return Meal(1, "Meal 1", "Cuisine 1", 0.99, "easy")
 
-def test_battle(mock_cursor):
-  
+@pytest.fixture
+def sample_meal2():
+    return Meal(2, "Meal 2", "Cuisine 2", 1.99, "hard")
+    
+@pytest.fixture
+def sample_battle(sample_meal1, sample_meal2):
+    return [sample_meal1, sample_meal2):
+
+
+def test_battle():
+
+def test_clear_combatants(battle_model, sample_meal1, sample_meal2):
+    """ Test clearing the combatants """
+    battle_model.combatants = [sample_meal1, sample_meal2)
+    battle_model.clear_combatants()
+    assert len(battle_model.combatants) == 0, "Playlist should be empty after clearing"
+
+def test_clear_combatants(battle_model, caplog):
+    """Test clearing combatants when it's empty."""
+    battle_model.clear_combatants()
+    assert len(battle_model.combatants) == 0, Combatants should be empty after clearing"
+    assert "Clearing empty combatans" in caplog.text, "Expected warning message when clearing empty combatants"
